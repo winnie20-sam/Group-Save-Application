@@ -1,0 +1,75 @@
+POST http://localhost:5000/Users
+Content-Type: application/json
+
+{
+     "name": "admin",
+    "email":"admin@gmail.com",
+    "password":"1902826",
+    "confPassword":"1902826",
+    "idNumber": "3788119700",
+    "phoneNumber":"0791043357",
+    "role":"admin"
+}      
+###
+//get all Users
+GET  http://localhost:5000/Users  
+###
+//get single user
+GET http://localhost:5000/Users/19109530-1887-4f7b-bfeb-358c76a5af4e
+
+###
+//update user
+PATCH http://localhost:5000/Users/19109530-1887-4f7b-bfeb-358c76a5af4e
+Content-Type: application/json
+
+{
+     "name": "winnie",
+    "email":"winnie@gmail.com",
+    "password":"12345",
+    "confPassword":"12345",
+    "role":"user"
+}  
+
+###
+//login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email":"admin@gmail.com",
+    "password":"1902826"
+}
+###
+
+
+###
+//login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email":"winnie@gmail.com",
+    "password":"12345"
+}
+###
+GET http://localhost:5000/Me
+
+###
+//logout
+DELETE  http://localhost:5000/logout
+
+###
+//get all savngs
+GET http://localhost:5000/savings
+
+###
+POST http://localhost:5000/savings
+Content-Type: application/json
+
+{
+    "name": "2nd installment",
+    "amount":"400",
+    "paymentDate":"2022"
+}
+###
+GET http://localhost:5000/token
