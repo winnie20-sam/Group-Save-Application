@@ -14,7 +14,6 @@ I first built this in 2023 with React and Node.js. In October 2026 I came back t
   - **Member:** sees and manages only their own savings.
 - **Savings records.** Add, edit and delete contributions with an amount and payment date.
 - **Dashboard.** Shows total savings, the number of contributions and the last payment date.
-- **M-Pesa STK push (sandbox).** Sends a payment prompt to the member's phone through the Safaricom Daraja API.
 - **Postman collection.** 16 requests with automated tests in `Backend/postman/`.
 
 ## Tech stack
@@ -24,7 +23,6 @@ I first built this in 2023 with React and Node.js. In October 2026 I came back t
 | Frontend | React 18, Redux Toolkit, React Router, Axios, Bulma |
 | Backend | Node.js, Express, Sequelize ORM |
 | Database | PostgreSQL |
-| Payments | Safaricom Daraja API (M-Pesa STK push, sandbox) |
 | Testing | Postman / Newman |
 
 ## Screenshots
@@ -41,8 +39,6 @@ I first built this in 2023 with React and Node.js. In October 2026 I came back t
 
 ```
 React (port 3000)  --axios + session cookie-->  Express API (port 5000)  --Sequelize-->  PostgreSQL
-                                                     |
-                                                     +--> Safaricom Daraja (M-Pesa)
 ```
 
 - On login, the API saves the user's id in a session. The browser keeps the session cookie.
@@ -91,7 +87,6 @@ npm start                 # http://localhost:3000
 | GET / PATCH / DELETE | `/savings/:id` | Owner or admin |
 | GET / POST | `/users` | Admin |
 | GET / PATCH / DELETE | `/users/:id` | Admin |
-| POST | `/mpesa/stkpush` | Logged in |
 
 To test the API, import `Backend/postman/Group-Save.postman_collection.json` into Postman. Set `adminPassword` in the collection variables, then run the collection.
 
@@ -100,10 +95,7 @@ To test the API, import `Backend/postman/Group-Save.postman_collection.json` int
 - **Members could not edit their savings.** The update query used a variable that did not exist (`price`), so the request crashed.
 - **Wrong endpoints.** The frontend called `/products` instead of `/savings` for edit and delete, and the add form did not send the payment date.
 - **CORS was set up twice.** The second setup overrode the first, so the login cookie was not sent with requests.
-- **Secrets were in the code.**
-  - The M-Pesa keys were written in `token.js` and the `.env` file was committed.
-  - Fix: moved them to environment variables, added `.env.example`, and stopped tracking `.env`.
-  - The old sandbox keys are still in the 2023 commit, so they need to be regenerated in the Daraja portal.
+- **The `.env` file was committed.** Stopped tracking it and added a `.env.example` with the settings the app needs.
 - **`node_modules` was committed** (41,000+ files). Added a `.gitignore` and removed them from the repo.
 - **Moved from MySQL to PostgreSQL.** Because the app uses Sequelize, this needed only the `pg` driver and a different `dialect`.
 - **Added a seed script.** Only an admin can create users, so a fresh install had no way to log in.
