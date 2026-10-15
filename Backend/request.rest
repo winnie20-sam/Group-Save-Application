@@ -1,75 +1,63 @@
-POST http://localhost:5000/Users
+// Run "npm run seed" first to create the admin account (see .env)
+
+###
+//login as admin
+POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-     "name": "admin",
-    "email":"admin@gmail.com",
-    "password":"1902826",
-    "confPassword":"1902826",
-    "idNumber": "3788119700",
-    "phoneNumber":"0791043357",
-    "role":"admin"
-}      
-###
-//get all Users
-GET  http://localhost:5000/Users  
-###
-//get single user
-GET http://localhost:5000/Users/19109530-1887-4f7b-bfeb-358c76a5af4e
+    "email":"admin@groupsave.test",
+    "password":"<ADMIN_PASSWORD from .env>"
+}
 
 ###
-//update user
-PATCH http://localhost:5000/Users/19109530-1887-4f7b-bfeb-358c76a5af4e
+//who is logged in
+GET http://localhost:5000/me
+
+###
+//create a member (admin only)
+POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-     "name": "winnie",
-    "email":"winnie@gmail.com",
-    "password":"12345",
-    "confPassword":"12345",
+    "name": "Jane Member",
+    "email":"jane@groupsave.test",
+    "password":"member123",
+    "confPassword":"member123",
+    "idNumber": "12345678",
+    "phoneNumber":"0712345678",
     "role":"user"
-}  
-
-###
-//login
-POST http://localhost:5000/login
-Content-Type: application/json
-
-{
-    "email":"admin@gmail.com",
-    "password":"1902826"
 }
-###
-
 
 ###
-//login
-POST http://localhost:5000/login
-Content-Type: application/json
-
-{
-    "email":"winnie@gmail.com",
-    "password":"12345"
-}
-###
-GET http://localhost:5000/Me
+//get all users (admin only)
+GET http://localhost:5000/users
 
 ###
-//logout
-DELETE  http://localhost:5000/logout
-
-###
-//get all savngs
+//get all savings (admin sees everyone, member sees their own)
 GET http://localhost:5000/savings
 
 ###
+//add a saving
 POST http://localhost:5000/savings
 Content-Type: application/json
 
 {
-    "name": "2nd installment",
-    "amount":"400",
-    "paymentDate":"2022"
+    "name": "October contribution",
+    "amount": 500,
+    "paymentDate": "2026-10-15"
 }
+
 ###
-GET http://localhost:5000/token
+//pay via M-Pesa (sandbox)
+POST http://localhost:5000/mpesa/stkpush
+Content-Type: application/json
+
+{
+    "phone": "0712345678",
+    "amount": 1
+}
+
+###
+//logout
+DELETE http://localhost:5000/logout

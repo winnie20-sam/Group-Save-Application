@@ -14,10 +14,11 @@ const FormEditSaving = () => {
     const getSavingById = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/${id}`
+          `http://localhost:5000/savings/${id}`
         );
         setName(response.data.name);
         setAmount(response.data.amount);
+        setpaymentDate(response.data.paymentDate);
       } catch (error) {
         if (error.response) {
           setMsg(error.response.data.msg);
@@ -81,7 +82,7 @@ const FormEditSaving = () => {
                 <label className="label">Payment Date</label>
                 <div className="control">
                   <input
-                    type="text"
+                    type="date"
                     className="input"
                     value={paymentDate}
                     onChange={(e) => setpaymentDate(e.target.value)}

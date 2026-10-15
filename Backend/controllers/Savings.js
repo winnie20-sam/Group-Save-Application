@@ -78,7 +78,7 @@ export const createSaving = async(req, res) =>{
             paymentDate:paymentDate,
             userId: req.userId
         });
-        res.status(201).json({msg: "Product Created Successfuly"});
+        res.status(201).json({msg: "Saving created successfully"});
     } catch (error) {
         res.status(500).json({msg: error.message});
     }
@@ -101,7 +101,7 @@ export const updateSaving = async(req, res) =>{
             });
         }else{
             if(req.userId !== savings.userId) return res.status(403).json({msg: "Access Denied"});
-            await Saving.update({name, price},{
+            await Saving.update({name, amount, paymentDate},{
                 where:{
                     [Op.and]:[{id: savings.id}, {userId: req.userId}]
                 }
@@ -121,7 +121,6 @@ export const deleteSaving = async(req, res) =>{
             }
         });
         if(!savings) return res.status(404).json({msg: "Data not found"});
-        const {name, amount,paymentDate} = req.body;
         if(req.role === "admin"){
             await Saving.destroy({
                 where:{

@@ -15,7 +15,7 @@ const SavingList = () => {
   };
 
   const deleteSaving = async (savingId) => {
-    await axios.delete(`http://localhost:5000/products/${savingId}`);
+    await axios.delete(`http://localhost:5000/savings/${savingId}`);
     getSaving();
   };
 
@@ -39,14 +39,15 @@ const SavingList = () => {
         </thead>
         <tbody>
           {savings.map((saving, index) => (
-            <tr key={savings.uuid}>
+            <tr key={saving.uuid}>
               <td>{index + 1}</td>
               <td>{saving.name}</td>
-              <td>{saving.amount}</td>
+              <td>KES {Number(saving.amount).toLocaleString()}</td>
+              <td>{saving.paymentDate}</td>
               <td>{saving.user.name}</td>
               <td>
                 <Link
-                  to={`/savings/edit/${saving.uuid}`}
+                  to={`/saving/edit/${saving.uuid}`}
                   className="button is-small is-info"
                 >
                   Edit

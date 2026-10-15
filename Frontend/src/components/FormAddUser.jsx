@@ -9,7 +9,7 @@ const FormAddUser = () => {
   const [confPassword, setConfPassword] = useState("");
   const [idNumber, setidNumber] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 

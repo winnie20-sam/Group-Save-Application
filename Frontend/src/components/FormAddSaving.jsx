@@ -15,6 +15,7 @@ const FormAddSavings = () => {
       await axios.post("http://localhost:5000/savings", {
         name: name,
         amount: amount,
+        paymentDate: paymentDate,
       });
       navigate("/saving");
     } catch (error) {

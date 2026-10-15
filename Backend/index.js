@@ -7,48 +7,52 @@ import SequelizeStore from "connect-session-sequelize";
 import UserRoute from "./routes/UserRoute.js";
 import SavingRoute from "./routes/SavingRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
-import TokenRoute from "./routes/token.js";
+import MpesaRoute from "./routes/MpesaRoute.js";
 dotenv.config();
 
 const app = express();
-//const TokenRoute = require("./routes/token");
 const port = process.env.PORT;
 
-
-
+// Save login sessions in the database so users stay logged in after a server restart
 const sessionStore = SequelizeStore(session.Store);
 
 const store = new sessionStore({
     db: db
 });
 
-//(async()=>{
- //await db.sync();
-//})();
-
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
-    saveUninitialized: true,
-    //store: store,
+    saveUninitialized: false,
+    store: store,
     cookie: {
         secure: 'auto'
     }
 }));
 
+// Only one cors setup. credentials: true lets the browser send the login cookie
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.CLIENT_URL
 }));
 app.use(express.json());
-app.use(cors()); 
 app.use(UserRoute);
 app.use(SavingRoute);
 app.use(AuthRoute);
-app.use("/token",TokenRoute);
+app.use(MpesaRoute);
 
-// store.sync();
+// Create the tables (users, saving, sessions) if they do not exist yet
+const startServer = async () => {
+    try {
+        await db.authenticate();
+        await db.sync();
+        await store.sync();
+        app.listen(port, ()=> {
+            console.log(`Server is running on port ${port}`);
+        });
+    } catch (error) {
+        console.log("Could not connect to the database:", error.message);
+    }
+}
 
-app.listen(port, ()=> {
-    console.log(`Server is running on port  ${port}`);
-});
+startServer();
